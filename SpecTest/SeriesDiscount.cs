@@ -12,9 +12,9 @@ namespace SpecTest
         {
             //arrange
             var target = new PotterShoppingCart();
-            List<Book> stubBooks = new List<Book>
+            List<PotterBook> stubBooks = new List<PotterBook>
             {
-                new Book { Series="Harry Potter", Volume = 1 ,Price=100 }
+                new PotterBook { Volume = 1 ,Price=100 }
             };
             decimal expected = 100;
 
@@ -29,10 +29,10 @@ namespace SpecTest
         {
             //arrange
             var target = new PotterShoppingCart();
-            List<Book> stubBooks = new List<Book>
+            List<PotterBook> stubBooks = new List<PotterBook>
             {
-                new Book { Series="Harry Potter", Volume = 1 ,Price=100 },
-                new Book { Series="Harry Potter", Volume = 2 ,Price=100 }
+                new PotterBook { Volume = 1 ,Price=100 },
+                new PotterBook { Volume = 2 ,Price=100 }
             };
             decimal expected = 190;
 

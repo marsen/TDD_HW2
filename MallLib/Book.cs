@@ -3,10 +3,9 @@ using System.Collections;
 
 namespace MallLib
 {
-    public class Book
+    public class PotterBook
     {
         public decimal Price { get; set; }
-        public string Series { get; set; }
         public int Volume { get; set; }
     }
 }

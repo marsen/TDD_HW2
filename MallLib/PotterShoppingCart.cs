@@ -10,7 +10,7 @@ namespace MallLib
         {
         }
 
-        public decimal Check(List<Book> stubBooks)
+        public decimal Check(List<PotterBook> stubBooks)
         {
             decimal totalPrice = stubBooks.Sum(x => x.Price);
             return totalPrice;
