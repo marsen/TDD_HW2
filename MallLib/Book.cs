@@ -1,4 +1,7 @@
-﻿namespace MallLib
+﻿using System;
+using System.Collections;
+
+namespace MallLib
 {
     public class Book
     {

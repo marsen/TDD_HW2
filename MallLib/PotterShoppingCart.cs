@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MallLib
 {
@@ -11,8 +12,8 @@ namespace MallLib
 
         public decimal Check(List<Book> stubBooks)
         {
-            //TODO Production
-            throw new NotImplementedException();
+            decimal totalPrice = stubBooks.Sum(x => x.Price);
+            return totalPrice;
         }
     }
 }
