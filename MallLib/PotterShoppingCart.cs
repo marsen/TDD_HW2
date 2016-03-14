@@ -10,9 +10,24 @@ namespace MallLib
         {
         }
 
-        public decimal Check(List<PotterBook> stubBooks)
+        public decimal Check(List<PotterBook> books)
         {
-            decimal totalPrice = stubBooks.Sum(x => x.Price);
+            decimal totalPrice;
+            if (books.Count == 1)
+            {
+                totalPrice = books.Sum(x => x.Price);                
+            }
+            else
+            {
+                if (books.ElementAt(0).Volume == books.ElementAt(1).Volume)
+                {
+                    totalPrice = books.Sum(x => x.Price);
+                }
+                else
+                {
+                    totalPrice = 0.95m * books.Sum(x => x.Price);
+                }
+            }
             return totalPrice;
         }
     }
