@@ -21,37 +21,38 @@ namespace MallLib
 
         public decimal Check(List<PotterBook> books)
         {
-            decimal totalPrice = 0;
-            var bookCount = books.Count();
-            var groupedBookList = books.GroupBy(x => x.Volume);
-            var groupCount = groupedBookList.Count();
-            if (groupCount == 1)
+            books = books.OrderBy(x => x.Volume).ToList();
+            PotterBook lastbook = null;
+            int pointer = 0;
+            List<PotterBook>[] template = new List<PotterBook>[books.Count];
+            foreach (var book in books)
             {
-                totalPrice = books.Sum(x => x.Price);
-            }
-            else if (groupCount == bookCount)
-            {
-                totalPrice = discountLogic.Find(x => x.Key == bookCount).Value * books.Sum(x => x.Price);
-            }
-            else
-            {
-                //groupCount == 2 or 3
-                for (int i = 0; i < groupCount; i++)
+                if (lastbook == null)
                 {
-                    var groupedBooks = groupedBookList.ElementAt(i);
-                    var groupedBooksCount = groupedBooks.Count();
-                    if (bookCount >= groupedBooksCount && groupedBooksCount > 0)
-                    {
-                        totalPrice = discountLogic.Find(x => x.Key == groupedBooksCount).Value * books.Sum(x => x.Price);
-                    }
-                    else
-                    {
-                        throw new Exception("未知的書籍組合");
-                    }
+                    template[pointer] = new List<PotterBook> { book };
+                }
+                else if (book.Volume == lastbook.Volume)
+                {
+                    pointer++;
+                    template[pointer] = new List<PotterBook> { book };
+                }
+                else
+                {
+                    pointer = 0;
+                    template[pointer].Add(book);
+   
+                }
+                lastbook = book;
+            }
+            decimal result = 0m;
+            foreach (var groupBookList in template)
+            {
+                if (groupBookList != null)
+                {
+                    result += discountLogic.Find(x => x.Key == groupBookList.Count()).Value * groupBookList.Sum(x => x.Price);
                 }
             }
-            
-            return totalPrice;
+            return result;
         }
     }
 }
