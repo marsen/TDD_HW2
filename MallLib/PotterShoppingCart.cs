@@ -21,40 +21,34 @@ namespace MallLib
         public decimal Check(List<PotterBook> books)
         {
             decimal totalPrice = 0;
-                var bookCount = books.Count();
-                var groupedBookList = books.GroupBy(x => x.Volume);
-                var groupCount = groupedBookList.Count();
-                if (groupCount == 1)
+            var bookCount = books.Count();
+            var groupedBookList = books.GroupBy(x => x.Volume);
+            var groupCount = groupedBookList.Count();
+            if (groupCount == 1)
+            {
+                totalPrice = books.Sum(x => x.Price);
+            }
+            else if (groupCount == bookCount)
+            {
+                totalPrice = discountLogic.Find(x => x.Key == bookCount).Value * books.Sum(x => x.Price);
+            }
+            else
+            {
+                //groupCount == 2 or 3
+                for (int i = 0; i < groupCount; i++)
                 {
-                    totalPrice = books.Sum(x => x.Price);
-                }
-                else if (groupCount == bookCount)
-                {
-                    totalPrice = discountLogic.Find(x=>x.Key == bookCount).Value * books.Sum(x => x.Price);
-                }
-                else
-                {
-                    //groupCount == 2 or 3
-                    for (int i = 0; i < groupCount; i++)
+                    var groupedBooks = groupedBookList.ElementAt(i);
+                    var groupedBooksCount = groupedBooks.Count();
+                    if (bookCount >= groupedBooksCount && groupedBooksCount > 0)
                     {
-                        var groupedBooks = groupedBookList.ElementAt(i);
-
-                        switch (groupedBooks.Count())
-                        {
-                            case 1:
-                                totalPrice += groupedBooks.Sum(x => x.Price);
-                                break;
-                            case 2:
-                                totalPrice += 0.95m * groupedBooks.Sum(x => x.Price);
-                                break;
-                            case 3:
-                                totalPrice += 0.90m * groupedBooks.Sum(x => x.Price);
-                                break;
-                            default:
-                                throw new Exception("未知的書籍組合");                                
-                        }
+                        totalPrice = discountLogic.Find(x => x.Key == groupedBooksCount).Value * books.Sum(x => x.Price);
+                    }
+                    else
+                    {
+                        throw new Exception("未知的書籍組合");
                     }
                 }
+            }
             
             return totalPrice;
         }
