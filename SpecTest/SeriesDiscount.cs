@@ -117,5 +117,25 @@ namespace SpecTest
             ////assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void 哈利波特系列_第一集買了一本_第二三集各買了兩本_價格應為460()
+        {
+            ////arrange
+            var target = new PotterShoppingCart();
+            List<PotterBook> stubBooks = new List<PotterBook>
+            {
+                new PotterBook { Volume = 1 ,Price=100 },
+                new PotterBook { Volume = 2 ,Price=100 },
+                new PotterBook { Volume = 2 ,Price=100 },
+                new PotterBook { Volume = 3 ,Price=100 },
+                new PotterBook { Volume = 3 ,Price=100 }
+            };
+            decimal expected = 460;
+            ////act
+            decimal actual = target.Check(stubBooks);
+            ////assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
