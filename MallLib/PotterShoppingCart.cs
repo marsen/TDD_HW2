@@ -12,7 +12,8 @@ namespace MallLib
                 new KeyValuePair<int, decimal>(1,1.00m),
                 new KeyValuePair<int, decimal>(2,0.95m),
                 new KeyValuePair<int, decimal>(3,0.90m),
-                new KeyValuePair<int, decimal>(4,0.80m)
+                new KeyValuePair<int, decimal>(4,0.80m),
+                new KeyValuePair<int, decimal>(5,0.75m)
             };
         public PotterShoppingCart()
         {
