@@ -6,6 +6,14 @@ namespace MallLib
 {
     public class PotterShoppingCart
     {
+        private List<KeyValuePair<int, decimal>> discountLogic =
+            new List<KeyValuePair<int, decimal>>()
+            {
+                new KeyValuePair<int, decimal>(1,1.00m),
+                new KeyValuePair<int, decimal>(2,0.95m),
+                new KeyValuePair<int, decimal>(3,0.90m),
+                new KeyValuePair<int, decimal>(4,0.80m)
+            };
         public PotterShoppingCart()
         {
         }
@@ -13,50 +21,41 @@ namespace MallLib
         public decimal Check(List<PotterBook> books)
         {
             decimal totalPrice = 0;
-            if (books.Count == 1)
-            {
-                totalPrice = books.Sum(x => x.Price);                
-            }
-            else if (books.Count == 2)
-            {
-                if (books.ElementAt(0).Volume == books.ElementAt(1).Volume)
-                {
-                    totalPrice = books.Sum(x => x.Price);
-                }
-                else
-                {
-                    totalPrice = 0.95m * books.Sum(x => x.Price);
-                }
-            }
-            else
-            {
+                var bookCount = books.Count();
                 var groupedBookList = books.GroupBy(x => x.Volume);
                 var groupCount = groupedBookList.Count();
                 if (groupCount == 1)
                 {
                     totalPrice = books.Sum(x => x.Price);
                 }
-                else if (groupCount == 3)
+                else if (groupCount == bookCount)
                 {
-                    totalPrice = 0.9m * books.Sum(x => x.Price);
+                    totalPrice = discountLogic.Find(x=>x.Key == bookCount).Value * books.Sum(x => x.Price);
                 }
                 else
                 {
-                    //groupCount == 2
+                    //groupCount == 2 or 3
                     for (int i = 0; i < groupCount; i++)
                     {
                         var groupedBooks = groupedBookList.ElementAt(i);
-                        if (groupedBooks.Count() == 1)
+
+                        switch (groupedBooks.Count())
                         {
-                            totalPrice += groupedBooks.Sum(x => x.Price);
-                        }
-                        else
-                        {
-                            totalPrice += 0.95m * groupedBooks.Sum(x => x.Price);
+                            case 1:
+                                totalPrice += groupedBooks.Sum(x => x.Price);
+                                break;
+                            case 2:
+                                totalPrice += 0.95m * groupedBooks.Sum(x => x.Price);
+                                break;
+                            case 3:
+                                totalPrice += 0.90m * groupedBooks.Sum(x => x.Price);
+                                break;
+                            default:
+                                throw new Exception("未知的書籍組合");                                
                         }
                     }
                 }
-            }
+            
             return totalPrice;
         }
     }
