@@ -34,7 +34,14 @@ namespace MallLib
                 else if (book.Volume == lastbook.Volume)
                 {
                     pointer++;
-                    template[pointer] = new List<PotterBook> { book };
+                    if (template[pointer] == null)
+                    {
+                        template[pointer] = new List<PotterBook> { book };
+                    }
+                    else
+                    {
+                        template[pointer].Add(book);
+                    }                    
                 }
                 else
                 {
