@@ -6,15 +6,17 @@ namespace MallLib
 {
     public class PotterShoppingCart
     {
-        private List<KeyValuePair<int, decimal>> discountLogic =
-            new List<KeyValuePair<int, decimal>>()
+        private Dictionary<int, decimal> discountLogic =
+            new Dictionary<int, decimal>()
             {
-                new KeyValuePair<int, decimal>(1,1.00m),
-                new KeyValuePair<int, decimal>(2,0.95m),
-                new KeyValuePair<int, decimal>(3,0.90m),
-                new KeyValuePair<int, decimal>(4,0.80m),
-                new KeyValuePair<int, decimal>(5,0.75m)
+                { 1 , 1.00m },
+                { 2 , 0.95m },
+                { 3 , 0.90m },
+                { 4 , 0.80m },
+                { 5 , 0.75m }
+
             };
+
         public PotterShoppingCart()
         {
         }
@@ -56,10 +58,15 @@ namespace MallLib
             {
                 if (groupBookList != null)
                 {
-                    result += discountLogic.Find(x => x.Key == groupBookList.Count()).Value * groupBookList.Sum(x => x.Price);
+                    result += GetDiscount(groupBookList) * groupBookList.Sum(x => x.Price);
                 }
             }
             return result;
+        }
+
+        private decimal GetDiscount(List<PotterBook> bookList)
+        {
+            return discountLogic[bookList.Count()];
         }
     }
 }
