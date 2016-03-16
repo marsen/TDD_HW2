@@ -28,6 +28,27 @@ namespace MallLib
         /// <returns>best price</returns>
         public decimal Check(List<PotterBook> books)
         {
+            List<PotterBook>[] groupedBooks = GetBookGrouping(books);
+
+            decimal result = 0m;
+            foreach (var bookList in groupedBooks)
+            {
+                if (bookList != null)
+                {
+                    result += this.GetDiscount(bookList) * bookList.Sum(x => x.Price);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// GetBookGrouping
+        /// </summary>
+        /// <param name="books">books</param>
+        /// <returns>Grouped books</returns>
+        private static List<PotterBook>[] GetBookGrouping(List<PotterBook> books)
+        {
             books = books.OrderBy(x => x.Volume).ToList();
             PotterBook lastbook = null;
             int pointer = 0;
@@ -59,16 +80,7 @@ namespace MallLib
                 lastbook = book;
             }
 
-            decimal result = 0m;
-            foreach (var groupBookList in template)
-            {
-                if (groupBookList != null)
-                {
-                    result += this.GetDiscount(groupBookList) * groupBookList.Sum(x => x.Price);
-                }
-            }
-
-            return result;
+            return template;
         }
 
         /// <summary>
